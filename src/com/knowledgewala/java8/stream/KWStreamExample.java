@@ -5,6 +5,7 @@ import java.util.Collection;
 import java.util.List;
 import java.util.function.Function;
 import java.util.stream.Collectors;
+import java.util.stream.IntStream;
 import java.util.stream.Stream;
 
 public class KWStreamExample {
@@ -14,7 +15,11 @@ public class KWStreamExample {
         // obtainStreamFromArray();
         // findFirstExample();
         // convertStreamToArray();
-        flatMapExample();
+        // flatMapExample();
+        // peekMethodExample();
+        // countMethodExample();
+        // shortCircuitMethod();
+        sortElement();
     }
 
     private static Employee[] getEmployeeArray() {
@@ -116,5 +121,74 @@ public class KWStreamExample {
                 .filter(e -> !e.contains("Ga"))
                 .collect(Collectors.toList());
         System.out.println(namesFlatStream);
+    }
+
+    private static void peekMethodExample(){
+        List<Employee> employees = List.of(
+                new Employee(1, "Dharmendra", 1234.522),
+                new Employee(2, "Rajesh", 2312.333),
+                new Employee(3, "Diwakar", 2323.33),
+                new Employee(4, null, 0.0)
+        );
+        employees.stream().peek(e -> e.setSalary(e.getSalary()*2))
+                .peek(System.out::println)
+                .collect(Collectors.toList());
+    }
+
+    private static void countMethodExample(){
+        List<Employee> employees = List.of(
+                new Employee(1, "Dharmendra", 1234.522),
+                new Employee(2, "Rajesh", 2312.333),
+                new Employee(3, "Diwakar", 2323.33),
+                new Employee(4, null, 0.0)
+        );
+        Long count = employees.stream().peek(e -> e.setSalary(e.getSalary()*2))
+                .count();
+        System.out.println("Total Employees :: "+count);
+    }
+    private static void shortCircuitMethod(){
+        IntStream intStream = IntStream.iterate(2, i -> i * 2);
+        Stream<Integer> stream = Stream.iterate(2, i -> i * 2);
+        stream.skip(3).limit(5).collect(Collectors.toList())
+                .forEach(System.out::println);
+        double average = intStream.skip(3).limit(5).average().getAsDouble();
+        System.out.println("Average :: "+ average);
+    }
+    private static void sortElement(){
+        List<Employee> employees = List.of(
+                new Employee(1, "Dharmendra", 1234.522),
+                new Employee(2, "Rajesh", 2312.333),
+                new Employee(3, "Diwakar", 2323.33),
+                new Employee(4, null, 0.0)
+        );
+        System.out.println("******  Ascending Order ******");
+        // Ascending Order
+        employees.stream().filter(e -> e.getName() != null)
+                .sorted((e1, e2) -> e1.getName().compareTo(e2.getName()))
+                .collect(Collectors.toList())
+                .forEach(System.out::println);
+
+        System.out.println("******  Descending Order ******");
+        // Descending Order
+        employees.stream().filter(e -> e.getName() != null)
+                .sorted((e1, e2) -> e2.getName().compareTo(e1.getName()))
+                .collect(Collectors.toList())
+                .forEach(System.out::println);
+
+        System.out.println("******  Min Element By ID ******");
+        // Min Element
+        Employee employee = employees.stream().min((e1, e2) -> (int) ( e1.getId() - e2.getId())).orElseThrow(NoSuchFieldError::new);
+        System.out.println(employee);
+
+        System.out.println("******  Max Element By ID ******");
+        // Min Element
+        employee = employees.stream().max((e1, e2) -> (int) ( e1.getId() - e2.getId())).orElseThrow(NoSuchFieldError::new);
+        System.out.println(employee);
+
+        System.out.println("******  Max Element By Salary ******");
+        // Min Element
+        employee = employees.stream().max((e1, e2) -> (int) ( e1.getSalary() - e2.getSalary())).orElseThrow(NoSuchFieldError::new);
+        System.out.println(employee);
+
     }
 }
