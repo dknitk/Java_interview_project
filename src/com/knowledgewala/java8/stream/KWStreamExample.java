@@ -1,8 +1,6 @@
 package com.knowledgewala.java8.stream;
 
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.List;
+import java.util.*;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
@@ -186,9 +184,70 @@ public class KWStreamExample {
         System.out.println(employee);
 
         System.out.println("******  Max Element By Salary ******");
-        // Min Element
+
+        // Max Element
         employee = employees.stream().max((e1, e2) -> (int) ( e1.getSalary() - e2.getSalary())).orElseThrow(NoSuchFieldError::new);
         System.out.println(employee);
 
+        // Ma Element
+        employee = employees.stream().max(Comparator.comparing(Employee::getSalary)).orElseThrow(NoSuchFieldError::new);
+        System.out.println(employee);
+
+        // Distinct Numbers
+        List<Integer> initList = Arrays.asList(2,5,3,2,4,3);
+        initList.stream().distinct().collect(Collectors.toList())
+                .forEach(System.out::println);
+
+        boolean allEven = initList.stream().allMatch(i -> i % 2 == 0);
+        boolean oneEven = initList.stream().anyMatch(i -> i % 2 == 0);
+        boolean nonemultipleOffThree = initList.stream().noneMatch(i -> i % 3 == 0);
+
+        System.out.println(" All Even :: "+ allEven);
+        System.out.println(" One Even :: "+ oneEven);
+        System.out.println(" None Multiple :: "+ nonemultipleOffThree);
+
+        // Init Stream
+        long maxID = employees.stream().mapToLong(Employee::getId)
+                .max().orElseThrow(NoSuchElementException::new);
+
+        // Stream Creation
+        IntStream.of(1,2,3,4,5,6);
+        IntStream.range(1, 20);
+        employees.stream().map(Employee::getId).collect(Collectors.toList());
+
+        // Average
+        double averageSalary = employees.stream().mapToDouble(Employee::getSalary)
+                .average()
+                .orElseThrow(NoSuchElementException::new);
+        System.out.println("Average Salary :: "+ averageSalary);
+
+        double sum = employees.stream().mapToDouble(e -> e.getSalary()).sum();
+        System.out.println("Sum Salary :: "+ sum);
+
+        Double sumSal = employees.stream()
+                .map(Employee::getSalary)
+                .reduce(0.0, Double::sum);
+        System.out.println(sumSal);
+
+        // Collectors.joining
+        String names = employees.stream().map(e -> e.getName())
+                .collect(Collectors.joining(","))
+                .toString();
+        System.out.println(" Name with comma :: "+ names);
+
+        // Collectors.toSet
+        Set<String> employeeSet = employees.stream().map(Employee::getName)
+                .collect(Collectors.toSet());
+        employeeSet.forEach(System.out::println);
+
+        // Collectors.toCollection
+        Vector<String> empNames = employees.stream().map(e -> e.getName())
+                .collect(Collectors.toCollection(Vector::new));
+        empNames.forEach(System.out::println);
+
+        // SummarizingDouble
+        DoubleSummaryStatistics doubleSummaryStatistics = employees.stream().collect(Collectors.summarizingDouble(Employee::getSalary));
+        System.out.println(" MAX :: " + doubleSummaryStatistics.getMax() + " AVERAGE :: " +
+                doubleSummaryStatistics.getAverage() + " SUM ::" +doubleSummaryStatistics.getSum());
     }
 }
