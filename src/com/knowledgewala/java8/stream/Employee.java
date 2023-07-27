@@ -43,4 +43,9 @@ public class Employee {
                 ", salary=" + salary +
                 '}';
     }
+
+    public Employee salaryIncrement(double incrementAmound){
+        this.setSalary(this.getSalary()+incrementAmound);
+        return this;
+    }
 }
