@@ -1,9 +1,6 @@
 package com.employee.stats;
 
-import java.util.ArrayList;
-import java.util.DoubleSummaryStatistics;
-import java.util.IntSummaryStatistics;
-import java.util.List;
+import java.util.*;
 import java.util.stream.Collectors;
 
 public class EmployeeStats {
@@ -27,14 +24,21 @@ public class EmployeeStats {
         System.out.println("Total Sum of age from the given Data :: " + intSummaryStatistics.getSum());
         System.out.println("Total Number of Employee's age from the given Data :: " + intSummaryStatistics.getCount());
 
+        System.out.println("***** Group By Designation *****");
+        Map<String, List<Employee>> groupByDesignation = getEmployees().stream()
+                .collect(Collectors.groupingBy(Employee::getDesignation));
+        for(String designation : groupByDesignation.keySet()){
+            System.out.println("****** " + designation + " *******");
+            groupByDesignation.get(designation).forEach(System.out::println);
+        }
     }
 
     private static List<Employee> getEmployees() {
         List<Employee> employeeList = new ArrayList<>();
         employeeList.add(new Employee(1, "Dharmendra Sahu", 37, EmployeeDesignation.EM.name(), EmployeeBAND.F.name(), 234512.12));
-        employeeList.add(new Employee(2, "Rajendra Sahu", 45, EmployeeDesignation.EM.name(), EmployeeBAND.F.name(), 23234));
+        employeeList.add(new Employee(2, "Rajendra Sahu", 45, EmployeeDesignation.PM.name(), EmployeeBAND.F.name(), 23234));
         employeeList.add(new Employee(3, "Jitendra Sahu", 34, EmployeeDesignation.EM.name(), EmployeeBAND.F.name(), 24512.12));
-        employeeList.add(new Employee(4, "Gopal Sahu", 39, EmployeeDesignation.EM.name(), EmployeeBAND.F.name(), 343434));
+        employeeList.add(new Employee(4, "Gopal Sahu", 39, EmployeeDesignation.BA.name(), EmployeeBAND.F.name(), 343434));
         return employeeList;
     }
 }
