@@ -17,7 +17,25 @@ public class KWStreamExample {
         // peekMethodExample();
         // countMethodExample();
         // shortCircuitMethod();
-        sortElement();
+        // sortElement();
+
+        // takeWhile example
+        Stream<Integer> integerStream = Stream.iterate(1, i -> i + 1)
+                .takeWhile(n -> n < 10)
+                .map(x -> x * x);
+        integerStream.forEach(System.out::println);
+
+        // dropWhile example
+        Stream<Integer> integerStream1 = Stream.of(1, 2, 3, 4, 5, 6, 7, 8, 9, 0, 9, 8, 7, 6, 5, 4, 3, 2, 1, 0).dropWhile(x -> x <= 5);
+        integerStream1.forEach(System.out::println);
+        System.out.println();
+        // Java 9 iterate method
+        Stream<Integer> iterate = Stream.iterate(1, i -> i <= 25, i -> i * 2);
+        iterate.forEach(System.out::println);
+
+        // ofNullable
+        Stream<Integer> integerStream2 = Stream.ofNullable(null);
+        integerStream2.forEach(System.out::println);
     }
 
     private static Employee[] getEmployeeArray() {
