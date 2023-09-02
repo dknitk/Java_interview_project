@@ -1,9 +1,11 @@
 package com.designpattern_moss.singleton;
 
+import java.io.Serializable;
+
 /**
  * Singleton Desing Pattern Example
  */
-public class KWSingletonDesignPattern {
+public class KWSingletonDesignPattern implements Serializable, Cloneable {
 
     // Eager way of instantiating Object
     private static KWSingletonDesignPattern singletonDesignPattern = new KWSingletonDesignPattern();
@@ -26,5 +28,10 @@ public class KWSingletonDesignPattern {
         return "KWSingletonDesignPattern{" +
                 "singletonDesignPattern=" + singletonDesignPattern.hashCode() +
                 '}';
+    }
+
+    @Override
+    protected Object clone() throws CloneNotSupportedException {
+        return super.clone();
     }
 }
